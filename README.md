@@ -1,46 +1,42 @@
-# Docker Lab: Containerizing a Three-Tier Application
-**INET 4031 - Introductions to Systems**
+# Docker Three-Tier Ticket System
 
-This lab introduces Docker and Docker Compose by having you containerize a
-real, multi-service application. You will package three components: Apache,
-Flask, and MariaDB. These will be packaged into separate containers and wired together so they function as a complete application.
+## Overview
 
-The application code and scaffolding are provided. Your job is to complete the Dockerfiles, verify the stack runs correctly, and document your work below.
+This project is a containerized three-tier web application built using Docker and Docker Compose. It simulates a real-world ticketing system and demonstrates how multiple services communicate in a distributed environment.
 
-> **Directions and explanations for this lab are on the repository Wiki.**
-> Refer to the Wiki pages for step-by-step instructions.
+The system includes:
 
----
+- Apache2 (Reverse Proxy / Web Server)
+- Flask (Backend API)
+- MariaDB (Database)
 
-*The sections below are for you to fill out. Replace each placeholder with your own content before submitting. Having a detailed README is the best practice for showing your work in future GitHub repositories.*
+All services run in isolated containers and communicate over a shared Docker network.
 
 ---
 
-# Project Overview
+## Architecture
 
-<!-- Briefly describe what this application does in your own words.
-     What problem does it solve? What does a user interact with? -->
+User → Apache (Port 80) → Flask API (Port 5000) → MariaDB Database
 
-# Prerequisites
+Apache acts as a reverse proxy and forwards API requests to the Flask backend. Flask handles application logic and communicates with the MariaDB database to store and retrieve ticket data.
 
-<!-- List what needs to be installed or configured on the VM before this lab
-     will work. Include Docker, Docker Compose, and anything else required. -->
+Docker Compose manages service orchestration, networking, and service health dependencies.
 
-# Getting Started
+---
 
-<!-- Explain how a new teammate would bring this stack up from a fresh clone.
-     Walk through every command they need to run, in order. -->
+## Services
 
-# Configuration
+### Apache (web)
+- Acts as reverse proxy
+- Exposes port 80 to host
+- Forwards `/api/*` requests to Flask
 
-<!-- Explain the .env file: what it is, what variables it contains,
-     and what a teammate needs to provide that is not in this repository. -->
+### Flask (app)
+- Python REST API
+- Handles ticket creation and retrieval
+- Connects to MariaDB using environment variables
 
-# Verification
-
-<!-- Describe how to confirm the stack is running correctly.
-     Reference the check script and what a passing run looks like. -->
-
-# Feedback (Optional)
-
-<!-- Do you have any feedback you would like to give us after completing this lab? What are some things you enjoyed? What about others that you felt was lackluster? Or maybe there was something that we missed that you'd love for us to touch on! This will help us improve the INET 4031 lab experience. We appreciate everything we can get!  -->
+### MariaDB (db)
+- Stores ticket data
+- Initialized using `init.sql`
+- Persists data using Docker volumes
